@@ -51,13 +51,13 @@
 .locker-logo {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, #a78bfa, #6366f1);
+  background: linear-gradient(135deg, #ff2d75, #d92566);
   border-radius: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 24px;
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 8px 24px rgba(255, 45, 117, 0.3);
 }
 
 .locker-logo svg {
@@ -71,7 +71,7 @@
   font-weight: 800;
   margin: 0 0 8px 0;
   letter-spacing: -0.5px;
-  background: linear-gradient(to right, #ffffff, #c0c0c0);
+  background: linear-gradient(to right, #ffffff, #ffb3d1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -99,9 +99,9 @@
 }
 
 .pin-dot.filled {
-  background: #a78bfa;
-  border-color: #a78bfa;
-  box-shadow: 0 0 12px rgba(167, 139, 250, 0.6);
+  background: #ff2d75;
+  border-color: #ff2d75;
+  box-shadow: 0 0 12px rgba(255, 45, 117, 0.6);
   transform: scale(1.15);
 }
 
@@ -131,13 +131,13 @@
 }
 
 .key-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: #ff2d75;
+  border-color: #ff2d75;
   transform: scale(1.05);
 }
 
 .key-btn:active {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 45, 117, 0.5);
   transform: scale(0.95);
 }
 
@@ -147,13 +147,18 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
+.key-btn.action-btn:hover {
+  background: transparent;
+  border: 1px solid #ff2d75;
+  color: #ff2d75;
+}
+
 .key-btn.action-btn svg {
   width: 20px;
   height: 20px;
   fill: currentColor;
 }
 
-/* Shake Animation for incorrect PIN */
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-8px); }
@@ -168,6 +173,7 @@
 .locker-container.shake .pin-dot {
   border-color: #ef4444;
 }
+
 .locker-container.shake .pin-dot.filled {
   background: #ef4444;
   box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);

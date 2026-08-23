@@ -26,17 +26,22 @@
   "action": {
     "default_popup": "popup.html",
     "default_title": "Web Locker",
-    "default_icon": "image.png"
+    "default_icon": {
+      "16": "images/icon16.png",
+      "32": "images/icon32.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
   },
   "icons": {
-    "16": "image.png",
-    "32": "image.png",
-    "48": "image.png",
-    "128": "image.png"
+    "16": "images/icon16.png",
+    "32": "images/icon32.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
   },
   "web_accessible_resources": [
     {
-      "resources": ["content.css", "image.png"],
+      "resources": ["content.css", "images/icon48.png"],
       "matches": ["<all_urls>"]
     }
   ],

@@ -186,7 +186,6 @@
         align-items: center;
         color: #e5e5e7;
         overflow: hidden;
-        transition: opacity 0.3s ease;
         box-sizing: border-box;
       }
 
@@ -195,66 +194,37 @@
         flex-direction: column;
         align-items: center;
         background: #000000;
-        border: 1px solid rgba(212, 178, 111, 0.15);
-        border-radius: 24px;
-        padding: 44px 40px;
-        max-width: 360px;
-        width: 90%;
+        padding: 18px 22px;
+        max-width: 380px;
+        width: 88%;
         box-sizing: border-box;
         text-align: center;
-        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(15px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
       }
 
       .locker-logo {
-        width: 52px;
-        height: 52px;
-        background: transparent;
-        border-radius: 12px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
-        overflow: hidden;
-      }
-
-      .locker-logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        width: 58px;
+        height: 58px;
+        margin-bottom: 24px;
       }
 
       .locker-title {
-        font-size: 18px;
-        font-weight: 800;
+        font-size: 28px;
+        font-weight: 700;
         margin: 0 0 6px 0;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #d4b26f;
+        color: #ffffff;
       }
 
       .locker-subtitle {
-        font-size: 12px;
+        font-size: 14px;
         color: rgba(255, 255, 255, 0.4);
-        margin: 0 0 28px 0;
+        margin: 0 0 24px 0;
         font-weight: 400;
-        letter-spacing: 0.2px;
       }
 
       .pin-display {
         display: flex;
-        gap: 16px;
-        margin-bottom: 32px;
+        gap: 12px;
+        margin-bottom: 16px;
         justify-content: center;
       }
 
@@ -262,93 +232,130 @@
         width: 12px;
         height: 12px;
         border-radius: 50%;
-        border: 2px solid rgba(255, 255, 255, 0.15);
-        transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+        background: rgba(255, 255, 255, 0.1);
+        transition: all 0.15s ease;
       }
 
       .pin-dot.filled {
-        background: #d4b26f;
-        border-color: #d4b26f;
-        box-shadow: 0 0 10px rgba(212, 178, 111, 0.3);
-        transform: scale(1.2);
+        background: #ff2d75;
+        box-shadow: 0 0 10px rgba(255, 45, 117, 0.6);
       }
 
       .pin-keypad {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 18px 24px;
-        width: 240px;
+        gap: 12px 16px;
+        width: 220px;
         margin: 0 auto;
-        margin-bottom: 8px;
       }
 
       .key-btn {
-        background: #09090b;
-        border: 1px solid rgba(212, 178, 111, 0.05);
+        background: rgba(255, 255, 255, 0.06);
+        border: none;
         border-radius: 50%;
-        width: 60px;
-        height: 60px;
+        width: 58px;
+        height: 58px;
         font-size: 20px;
-        font-weight: 500;
+        font-weight: 300;
         color: #e5e5e7;
         cursor: pointer;
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: all 0.15s ease;
         user-select: none;
         -webkit-tap-highlight-color: transparent;
         box-sizing: border-box;
       }
 
       .key-btn:hover {
-        background: #d4b26f;
-        color: #000000;
-        border-color: #d4b26f;
+        background: rgba(255, 45, 117, 0.2);
+        color: #ff2d75;
       }
 
       .key-btn:active {
-        transform: scale(0.9);
+        transform: scale(0.95);
       }
 
       .key-btn.action-btn {
-        font-size: 10px;
-        font-weight: 700;
-        color: rgba(255, 255, 255, 0.4);
-        text-transform: uppercase;
-        border: none;
-        background: transparent;
+        font-size: 9px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.3);
+        letter-spacing: 0.5px;
       }
 
       .key-btn.action-btn:hover {
-        color: #d4b26f;
-        background: transparent;
-        border: none;
+        color: #ff2d75;
       }
 
       .key-btn.action-btn svg {
-        width: 18px;
-        height: 18px;
+        width: 14px;
+        height: 14px;
         fill: currentColor;
       }
 
       @keyframes shake {
         0%, 100% { transform: translateX(0); }
-        20%, 60% { transform: translateX(-6px); }
-        40%, 80% { transform: translateX(6px); }
+        20%, 60% { transform: translateX(-5px); }
+        40%, 80% { transform: translateX(5px); }
       }
 
       .locker-container.shake {
         animation: shake 0.3s ease;
-        border-color: #ff3b30;
       }
 
       .locker-container.shake .pin-dot {
-        border-color: #ff3b30;
+        background: rgba(255, 59, 48, 0.4);
       }
       .locker-container.shake .pin-dot.filled {
         background: #ff3b30;
-        border-color: #ff3b30;
+        box-shadow: 0 0 12px rgba(255, 59, 48, 0.6);
+      }
+
+      .message-error {
+        font-size: 12px;
+        color: #ff2d75;
+        margin: 0 0 2px 0;
+        text-align: center;
+        font-weight: 500;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        min-height: 14px;
+      }
+
+      .message-error.hiding {
+        opacity: 0;
+      }
+
+      .message-info {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.3);
+        margin: 0 0 16px 0;
+        text-align: center;
+        font-weight: 300;
+        min-height: 13px;
+      }
+
+      .lockout-countdown-inline {
+        font-size: 13px;
+        color: #ff2d75;
+        margin: 16px 0 4px 0;
+        text-align: center;
+        font-weight: 500;
+      }
+
+      .keypad-disabled {
+        opacity: 0.4;
+        pointer-events: none;
+        filter: grayscale(0.5);
+      }
+
+      .keypad-hidden {
+        display: none !important;
+      }
+
+      .hidden {
+        display: none !important;
       }
     `;
     shadow.appendChild(style);
@@ -360,10 +367,21 @@
     overlay.innerHTML = `
       <div class="locker-container">
         <div class="locker-logo">
-          <img src="${isContextValid() ? chrome.runtime.getURL('image.png') : ''}" alt="Logo">
+          <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="lockGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style="stop-color:#ff2d75;stop-opacity:0.35" />
+                <stop offset="100%" style="stop-color:#ff2d75;stop-opacity:0" />
+              </radialGradient>
+            </defs>
+            <circle cx="28" cy="28" r="28" fill="url(#lockGlow)"/>
+            <rect x="15" y="26" width="26" height="22" rx="5" fill="#ff2d75"/>
+            <path d="M20 26V20a8 8 0 0 1 16 0v6" fill="none" stroke="#ff7aaa" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="28" cy="36" r="2.5" fill="#ffffff"/>
+          </svg>
         </div>
-        <h2 class="locker-title">Halaman Terkunci</h2>
-        <p class="locker-subtitle">Masukkan PIN Anda untuk mengakses ${hostname}</p>
+        <h2 class="locker-title">Website Locked</h2>
+        <p class="locker-subtitle">${hostname}</p>
         
         <div class="pin-display">
           <div class="pin-dot"></div>
@@ -374,7 +392,10 @@
           <div class="pin-dot"></div>
         </div>
 
-        <div class="pin-keypad">
+        <p class="message-error hidden" id="message-error"></p>
+        <p class="message-info hidden" id="message-info"></p>
+
+        <div class="pin-keypad" id="pin-keypad">
           <button class="key-btn" data-key="1">1</button>
           <button class="key-btn" data-key="2">2</button>
           <button class="key-btn" data-key="3">3</button>
@@ -402,6 +423,57 @@
     let pinInput = "";
     const container = overlay.querySelector(".locker-container");
     const dots = overlay.querySelectorAll(".pin-dot");
+    const keypad = overlay.querySelector("#pin-keypad");
+    const messageError = overlay.querySelector("#message-error");
+    const messageInfo = overlay.querySelector("#message-info");
+    let lockoutCountdownTimer = null;
+    let errorHideTimer = null;
+
+    function showError(msg, autoHide) {
+      messageError.textContent = msg;
+      messageError.classList.remove("hidden");
+      messageError.classList.remove("hiding");
+      // Force reflow to ensure transition works
+      void messageError.offsetWidth;
+      if (errorHideTimer) {
+        clearTimeout(errorHideTimer);
+        errorHideTimer = null;
+      }
+      if (autoHide) {
+        errorHideTimer = setTimeout(() => {
+          messageError.classList.add("hiding");
+          setTimeout(() => {
+            messageError.classList.add("hidden");
+            messageError.classList.remove("hiding");
+          }, 300);
+        }, 3000);
+      }
+    }
+
+    function showInfo(msg) {
+      messageInfo.textContent = msg;
+      messageInfo.classList.remove("hidden");
+    }
+
+    function hideError() {
+      if (errorHideTimer) {
+        clearTimeout(errorHideTimer);
+        errorHideTimer = null;
+      }
+      messageError.classList.add("hidden");
+      messageError.classList.remove("hiding");
+    }
+
+    function hideInfo() {
+      messageInfo.classList.add("hidden");
+    }
+
+    function updateLockoutInfoText() {
+      if (!isContextValid()) return;
+      chrome.storage.local.get(["lockoutAttempts", "lockoutDuration"], (data) => {
+        // No longer showing persistent lockout info text
+      });
+    }
 
     function updateDots() {
       dots.forEach((dot, index) => {
@@ -413,7 +485,68 @@
       });
     }
 
+    function getLockoutCountdownText(lockoutUntil) {
+      const remaining = Math.max(0, lockoutUntil - Date.now());
+      const totalSeconds = Math.ceil(remaining / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function enterLockoutState(lockoutUntil) {
+      // Disable keypad (keep visible)
+      keypad.classList.add("keypad-disabled");
+      hideError();
+      showError(`Too many attempts. Try again in ${getLockoutCountdownText(lockoutUntil)}`, false);
+      showInfo("PIN temporarily locked");
+
+      const updateCountdown = () => {
+        const remaining = lockoutUntil - Date.now();
+        if (remaining <= 0) {
+          exitLockoutState();
+          return;
+        }
+        messageError.textContent = `Too many attempts. Try again in ${getLockoutCountdownText(lockoutUntil)}`;
+      };
+      updateCountdown();
+      lockoutCountdownTimer = setInterval(updateCountdown, 1000);
+    }
+
+    function exitLockoutState() {
+      if (lockoutCountdownTimer) {
+        clearInterval(lockoutCountdownTimer);
+        lockoutCountdownTimer = null;
+      }
+      keypad.classList.remove("keypad-disabled");
+      hideError();
+      hideInfo();
+      chrome.storage.local.set({ lockoutUntil: null, lockoutFailedAttempts: 0 });
+    }
+
+    function checkAndApplyLockout() {
+      if (!isContextValid()) return;
+      chrome.storage.local.get(["lockoutUntil"], (data) => {
+        if (data.lockoutUntil && data.lockoutUntil > Date.now()) {
+          enterLockoutState(data.lockoutUntil);
+        } else if (data.lockoutUntil) {
+          // Expired, clear it
+          chrome.storage.local.set({ lockoutUntil: null, lockoutFailedAttempts: 0 });
+          updateLockoutInfoText();
+        } else {
+          updateLockoutInfoText();
+        }
+      });
+    }
+
+    // Check lockout state on init
+    checkAndApplyLockout();
+
     function handleKeyPress(key) {
+      if (keypad.classList.contains("keypad-disabled")) return;
+
+      hideError();
+      hideInfo();
+
       if (key === "clear") {
         pinInput = "";
         updateDots();
@@ -426,7 +559,6 @@
           updateDots();
           
           if (pinInput.length === 6) {
-            // Auto check PIN
             verifyPin(pinInput);
           }
         }
@@ -455,16 +587,24 @@
 
     function verifyPin(enteredPin) {
       if (!isContextValid()) return;
-      chrome.storage.local.get("pin", (data) => {
+      chrome.storage.local.get(["pin", "lockoutFailedAttempts", "lockoutAttempts", "lockoutDuration"], (data) => {
         if (!isContextValid()) return;
         const actualPin = data.pin;
+        const maxAttempts = data.lockoutAttempts !== undefined ? parseInt(data.lockoutAttempts, 10) : 5;
+        const durationMinutes = data.lockoutDuration !== undefined ? parseInt(data.lockoutDuration, 10) : 5;
+        const failedAttempts = data.lockoutFailedAttempts || 0;
         
         if (enteredPin === actualPin) {
           // Success: Unlock site for this tab
+          chrome.storage.local.set({ lockoutFailedAttempts: 0, lockoutUntil: null });
           chrome.runtime.sendMessage({ action: "unlockSiteForTab", hostname }, () => {
             // Fade out animations
             overlay.style.opacity = "0";
             window.removeEventListener("keydown", onKeyDown);
+            if (lockoutCountdownTimer) {
+              clearInterval(lockoutCountdownTimer);
+              lockoutCountdownTimer = null;
+            }
             setTimeout(() => {
               removeBlocker();
               if (root.parentNode) {
@@ -474,13 +614,45 @@
             }, 400);
           });
         } else {
-          // Fail: Trigger shake animation and clear
-          container.classList.add("shake");
-          setTimeout(() => {
-            container.classList.remove("shake");
+          const newFailedAttempts = failedAttempts + 1;
+
+          if (maxAttempts > 0 && newFailedAttempts >= maxAttempts) {
+            // Trigger lockout
+            const lockoutUntil = Date.now() + (durationMinutes * 60 * 1000);
+            chrome.storage.local.set({
+              lockoutFailedAttempts: newFailedAttempts,
+              lockoutUntil: lockoutUntil
+            });
+
+            // Show shake + lockout
+            container.classList.add("shake");
+            setTimeout(() => {
+              container.classList.remove("shake");
+            }, 500);
             pinInput = "";
             updateDots();
-          }, 500);
+            enterLockoutState(lockoutUntil);
+          } else {
+            chrome.storage.local.set({ lockoutFailedAttempts: newFailedAttempts });
+
+            // Fail: Trigger shake animation and clear
+            container.classList.add("shake");
+            setTimeout(() => {
+              container.classList.remove("shake");
+              pinInput = "";
+              updateDots();
+            }, 500);
+
+            // Show error with auto-hide + remaining attempts
+            if (maxAttempts > 0) {
+              const remaining = maxAttempts - newFailedAttempts;
+              showError("Wrong PIN. Try again.", true);
+              showInfo(`${remaining} attempt(s) remaining`);
+            } else {
+              showError("Wrong PIN. Try again.", true);
+              hideInfo();
+            }
+          }
         }
       });
     }

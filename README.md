@@ -1,111 +1,179 @@
 # 🔒 Web Locker
 
-A browser extension that locks specific websites behind a 6-digit PIN (or password). A lightweight focus/anti-procrastination tool — set a PIN, choose which sites to protect, and the page is completely hidden until the correct PIN is entered.
+```
+ ██╗    ██╗███████╗██████╗ ██╗     ██████╗ 
+ ██║    ██║██╔════╝██╔══██╗██║     ██╔══██╗
+ ██║ █╗ ██║█████╗  ██████╔╝██║     ██║  ██║
+ ██║███╗██║██╔══╝  ██╔══██╗██║     ██║  ██║
+ ╚███╔███╔╝███████╗██████╔╝███████╗██████╔╝
+  ╚══╝╚══╝ ╚══════╝╚═════╝ ╚══════╝╚═════╝ 
 
-![Web Locker Screenshot](./image.png)
+ 🔐 PIN Lock | ⏱️ Auto Re-Lock | 🛡️ Lockout Protection
+```
 
-Supports **Chrome, Edge, and Firefox** through a single cross-browser [Manifest V3](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json) file.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+![Manifest](https://img.shields.io/badge/Manifest-V3-blue)
+![Platform](https://img.shields.io/badge/Platform-Chrome%20%7C%20Edge%20%7C%20Firefox-green)
+![Privacy](https://img.shields.io/badge/Privacy-Local%20Only-pink)
+
+> 🔒 A minimalist browser extension that locks distracting websites behind a 6-digit PIN. Zero content leaks, zero tracking — just pure focus.
+
+---
+
+## 📷 Preview
+
+| Lock Screen | Popup Menu | Settings |
+|:---:|:---:|:---:|
+| ![Lock Screen](./asset/web-lock-preview.webp) | ![Popup Menu](./asset/popup-menu.webp) | ![Settings](./asset/web-lock-preview.webp) |
 
 ---
 
 ## ✨ Features
 
-- **Lock any website per-domain** — lock a site and all of its subdomains are protected.
-- **6-digit PIN** — secure your locked sites with a numeric PIN.
-- **Auto-lock on idle** — automatically re-lock after inactivity. Configurable intervals:
-  - **Instant** — locks again on every reload / new tab,
-  - 1 Minute / 5 Minutes / 15 Minutes / 30 Minutes.
-- **Zero content leak** — the page is hidden (`display:none`) *immediately* when the page starts loading, before any content is painted. The lock screen (logo + PIN pad) is then injected, so protected content is never visible without the correct PIN.
-- **Keyboard support** — type digits / `Backspace` / `Escape` (clear).
-- **Dark aesthetic** — clean, distraction-free lock screen.
+- 🔒 **6-Digit PIN Lock** — Lock any website by domain. All subdomains are protected.
+- ⏱️ **Auto Re-Lock** — Automatically re-locks websites after idle. Configurable timer.
+- 🛡️ **Lockout Protection** — Too many wrong attempts? Input locks temporarily. Configurable.
+- ⌨️ **Numpad + Keyboard** — Click digits or type directly. Backspace + Escape support.
+- 🚫 **Zero Content Leak** — Page hidden before rendering. No flashing, no peeking.
+- 💾 **Import / Export** — Backup and migrate your lock list. No account needed.
+- 🌍 **Cross-Browser** — Chrome, Edge, Firefox. Single Manifest V3.
+- 🌙 **AMOLED Dark Mode** — Minimal lock screen with neon pink accents. Easy on the eyes.
+- 🔐 **Lockout PIN Confirmation** — Changing lockout settings requires PIN confirmation.
 
 ---
 
-## ⚙️ How it works
+## ⚠️ How it works
 
-1. **Instant page hide** — `content.js` runs at `document_start` (top frame only) and hides the whole page (`html { display: none }`) before anything renders.
-2. **Lock check** — the content script asks the (event-page) background script whether the current hostname is locked in `chrome.storage`.
-3. **Lock screen** — if locked, a Shadow DOM lock screen (logo + PIN pad) is injected over the page.
-4. **PIN verify** — each PIN digit posts to `chrome.storage.local`; on a full 6-digit match it unlocks the site **for this tab only** for the configured auto-lock timeout (or until idle lock triggers).
-5. **Idle lock** — activity listeners (mousemove / keydown / click / scroll) reset a timer; once idle past the timeout, the lock screen is re-shown for that tab.
+> [!NOTE]
+> **Web Locker Architecture**
+>
+> 1. **Instant page hide** — `content.js` runs at `document_start` and hides the whole page before anything renders.
+> 2. **Lock check** — Content script asks the background script whether the current hostname is locked.
+> 3. **Lock screen** — If locked, a Shadow DOM lock screen (logo + PIN pad) is injected.
+> 4. **PIN verify** — Each digit posts to `chrome.storage.local`. On 6-digit match, unlocks the site for the configured timeout.
+> 5. **Idle lock** — After idle timeout, the lock screen re-appears automatically.
 
-Unlock state is kept in-memory per tab (cleared on tab close) — nothing sensitive is cached across tabs or restarts.
-
----
-
-## 🔐 Security notes
-
-- The PIN is stored in **browser storage** (`chrome.storage`) as set by you. Treat it like any local browser setting — it is **not** server-side and is synced only across **your own** signed-in browser (if you use sync storage).
-- There is no backend or remote server. All verification happens locally, inside the extension.
-- No telemetry, analytics, or usage data is collected.
-
-See [`PRIVACY_POLICY.md`](./PRIVACY_POLICY.md) for the full data-handling statement (subtitle translation data etc. applies to *my other* BiliSub extension; Web Locker itself collects nothing).
+Unlock state is kept in-memory per tab — nothing sensitive is cached across tabs or restarts.
 
 ---
 
 ## 🚀 Installation
 
-> One `manifest.json` works everywhere. Requires Chrome 111+ / Edge 111+, or Firefox 142+ (Firefox uses a background event page, so the `service_worker` key is ignored by Firefox and the `scripts` key provides the background).
+Web Locker ships a **single cross-browser `manifest.json`** and runs on Chrome, Edge, and Firefox.
 
 ### Chrome / Edge
 
-1. Download or clone this repository.
-2. Open `chrome://extensions/`.
-3. Enable **Developer mode** (top-right).
-4. Click **Load unpacked** and select this folder.
-5. Pin the icon, set a PIN, and add sites to lock.
+1. Download or clone this repository
+2. Go to `chrome://extensions/`
+3. Enable **Developer mode** in the top right corner
+4. Click **Load unpacked** and select this extension folder
+5. Pin the icon, set your PIN, and start locking websites!
 
 ### Firefox
 
-1. Download or clone this repository.
-2. Open `about:debugging` → **This Firefox**.
-3. Click **Load Temporary Add-on** and select `manifest.json`.
+1. Download or clone this repository
+2. Open Firefox and go to `about:debugging`
+3. Click **This Firefox**
+4. Click **Load Temporary Add-on** and select the `manifest.json` file
 
 ---
 
 ## 🎮 Usage
 
-1. Click the **Web Locker** toolbar icon.
-2. Set your **6-digit PIN** (initial setup screen appears on first run).
-3. While on a site you want to protect, click **Kunci Website Ini** (lock this site).
-4. Reload the page — the page is hidden until you enter the PIN.
+1. Click the **Web Locker** icon in your browser toolbar
+2. On a website you want to lock, click **Lock Website**
+3. Reload the page — the lock screen appears
+4. Enter your **6-digit PIN** to unlock
+5. The site re-locks after your configured idle time
 
-### Settings
+### Popup Tabs
 
-- **Daftar** tab — add/remove locked domains (e.g. `facebook.com`).
-- **Pengaturan** tab — change your PIN and pick the **Auto Lock** idle timeout.
-
----
-
-## 📦 Permissions
-
-| Permission | Why |
-|---|---|
-| `storage` | Save the PIN, locked-site list, and auto-lock timeout. |
-| `tabs` & `activeTab` | Detect the active tab's URL, (un)lock per-tab, and reload tabs. |
-| `<all_urls>` (host) | Run the page-hiding content script on every site. |
+| Tab | Purpose |
+|-----|---------|
+| **Lock** | Lock/unlock current website, see status |
+| **List** | Add/remove locked domains |
+| **Settings** | Change PIN, auto-lock timer, lockout settings |
+| **Import / Export** | Backup or restore your lock list |
 
 ---
 
-## 🛠 Development / Build
+## 🔐 Security Notes
 
-No build step. The extension is plain JS + an inline Shadow DOM lock screen. To inspect:
+> [!IMPORTANT]
+> **Privacy First**
+>
+> - The PIN is stored in **browser storage** (`chrome.storage.local`) on your device only.
+> - There is **no backend or remote server**. All verification happens locally.
+> - **No telemetry, analytics, or usage data** is collected whatsoever.
+> - Lockout state persists across browser restarts (stored in local storage).
+> - Import / Export files contain only your lock list — no PIN or sensitive data.
 
-- **Popup** — inspect via the extension popup (`about:debugging` → inspect).
-- **Content script** — open the protected page's devtools; the lock screen lives under `#web-locker-root` (Shadow DOM, open mode).
+See [`PRIVACY_POLICY.md`](./PRIVACY_POLICY.md) for the full data-handling statement.
 
 ---
 
-## 🤝 Credits
+## 🛠 Technical Details
 
-Built as a compact, privacy-first site-locker. The lock screen uses a self-contained SVG/embedded style approach with no external network requests, so it works even on strict-CSP pages.
+```mermaid
+graph TD
+    A[Website Loads] --> B{content.js @ document_start}
+    B --> C[Hide page via display:none]
+    C --> D{Check if hostname locked}
+    D -->|Locked| E[Inject Shadow DOM lock screen]
+    D -->|Not Locked| F[Show page normally]
+    E --> G[User enters PIN]
+    G --> H{Verify 6-digit PIN}
+    H -->|Correct| I[Unlock + start idle timer]
+    H -->|Wrong| J[Increment attempt counter]
+    J --> K{Attempts >= Limit?}
+    K -->|Yes| L[Lock input for duration]
+    K -->|No| M[Show remaining attempts]
+    I --> N{Idle timeout?}
+    N -->|Yes| E
+    N -->|No| O[Keep unlocked]
+```
+
+**Key files:**
+
+| File | Purpose |
+|------|---------|
+| `manifest.json` | Extension configuration (MV3) |
+| `content.js` | Page hiding + lock screen injection (Shadow DOM) |
+| `popup.js` | Popup UI logic, PIN verification, settings management |
+| `background.js` | Event routing, tab management, lock state coordination |
+
+---
+
+## 🔮 What's Next
+
+> [!TIP]
+> Future development plans for **Web Locker**:
+>
+> - Publishing to **Chrome Web Store** & **Firefox Add-ons**
+> - Custom lock screen messages per website
+> - Scheduled locking (lock sites during work hours)
+> - Statistics dashboard (time spent on locked sites)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+
+1. Fork this repository
+2. Create a feature branch
+3. Submit a pull request
+
+---
 
 ## 📝 License
 
-See [`LICENSE`](./LICENSE) (if not present, this project is released for personal use). Feel free to fork and adapt.
+MIT License — free to use in your own projects!
 
 ---
 
 <div align="center">
-Made with care. 🫡
+Made with 🔐 for the focused community
+<br>
+🌟 Star us if you find this useful!
 </div>

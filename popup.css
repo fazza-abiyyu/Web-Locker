@@ -3,11 +3,11 @@
 :root {
   --bg-color: #000000;
   --card-bg: #09090b;
-  --card-border: rgba(212, 178, 111, 0.12); /* Subtle gold border tint */
-  --text-primary: #e5e5e7; /* Soft light gray instead of bright white */
-  --text-secondary: #9a9a9f; /* Medium gray */
+  --card-border: rgba(255, 45, 117, 0.12);
+  --text-primary: #e5e5e7;
+  --text-secondary: #9a9a9f;
   --text-muted: #555558;
-  --accent-gold: #d4b26f; /* Premium warm gold */
+  --accent-gold: #ff2d75;
   --error-color: #ff453a;
 }
 
@@ -25,7 +25,6 @@ body {
   padding: 24px 20px;
 }
 
-/* Header styling */
 .app-header {
   margin-bottom: 24px;
 }
@@ -44,7 +43,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 15px rgba(212, 178, 111, 0.15);
+  box-shadow: 0 4px 15px rgba(255, 45, 117, 0.15);
 }
 
 .app-logo svg {
@@ -71,7 +70,6 @@ body {
   opacity: 0.8;
 }
 
-/* AMOLED Cards */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -80,7 +78,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Tab Navigation (Pills) */
 .tab-nav {
   display: flex;
   gap: 6px;
@@ -132,7 +129,6 @@ body {
   display: none;
 }
 
-/* Inputs & Form Elements */
 .section-title {
   font-size: 13px;
   font-weight: 700;
@@ -214,8 +210,8 @@ select:focus {
 }
 
 .primary-btn:hover {
-  background: #bfa063;
-  border-color: #bfa063;
+  background: #d92566;
+  border-color: #d92566;
 }
 
 .primary-btn:active {
@@ -233,7 +229,6 @@ select:focus {
   color: var(--accent-gold);
 }
 
-/* Status View */
 .status-card {
   text-align: center;
 }
@@ -280,7 +275,7 @@ select:focus {
   color: #000000;
   background: var(--accent-gold);
   border-color: var(--accent-gold);
-  box-shadow: 0 0 15px rgba(212, 178, 111, 0.2);
+  box-shadow: 0 0 15px rgba(255, 45, 117, 0.2);
 }
 
 .status-icon svg {
@@ -319,7 +314,6 @@ select:focus {
   color: #000000;
 }
 
-/* Locked Sites Tab list */
 .add-site-form {
   display: flex;
   gap: 8px;
@@ -341,7 +335,7 @@ select:focus {
 }
 
 .icon-btn:hover {
-  background: #bfa063;
+  background: #d92566;
 }
 
 .icon-btn svg {
@@ -408,7 +402,6 @@ select:focus {
   fill: currentColor;
 }
 
-/* Feedback messages */
 .error-text {
   color: var(--error-color);
   font-size: 11px;
@@ -427,7 +420,6 @@ select:focus {
   color: var(--error-color);
 }
 
-/* Modal Overlay & Card Styling */
 .modal-overlay {
   position: absolute;
   top: 0;
@@ -506,4 +498,55 @@ select:focus {
 
 .modal-buttons .primary-btn {
   flex: 1;
+}
+
+.backup-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.backup-buttons .secondary-btn {
+  padding: 10px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.backup-buttons .secondary-btn:hover {
+  background: var(--accent-gold);
+  color: #000000;
+}
+
+.lockout-countdown {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--error-color);
+  margin: 8px 0;
+  padding: 8px 10px;
+  background: rgba(255, 69, 58, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 69, 58, 0.2);
+}
+
+.lockout-countdown.hidden {
+  display: none;
+}
+
+input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hidden {
+  display: none !important;
 }
