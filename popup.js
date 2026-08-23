@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let isCurrentSiteLocked = false;
 
   // Lock Icon SVGs
-  const SVG_LOCKED = `<path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>`;
-  const SVG_UNLOCKED = `<path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"/>`;
+  const SVG_LOCKED_PATH = "M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z";
+  const SVG_UNLOCKED_PATH = "M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z";
 
   // Check if PIN is already set
   chrome.storage.local.get(["pin", "lockedSites"], (data) => {
@@ -306,13 +306,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isCurrentSiteLocked) {
       statusIcon.className = "status-icon locked";
-      lockIconSvg.innerHTML = SVG_LOCKED;
+      lockIconSvg.innerHTML = "";
+      const pathLocked = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      pathLocked.setAttribute("d", SVG_LOCKED_PATH);
+      lockIconSvg.appendChild(pathLocked);
       statusText.textContent = "Locked";
       statusText.style.color = "var(--error-color)";
       toggleLockBtn.textContent = "Unlock This Website";
     } else {
       statusIcon.className = "status-icon unlocked";
-      lockIconSvg.innerHTML = SVG_UNLOCKED;
+      lockIconSvg.innerHTML = "";
+      const pathUnlocked = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      pathUnlocked.setAttribute("d", SVG_UNLOCKED_PATH);
+      lockIconSvg.appendChild(pathUnlocked);
       statusText.textContent = "Unlocked";
       statusText.style.color = "var(--success-color)";
       toggleLockBtn.textContent = "Lock This Website";

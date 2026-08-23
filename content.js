@@ -364,68 +364,136 @@
     const overlay = document.createElement("div");
     overlay.className = "locker-overlay";
 
-    overlay.innerHTML = `
-      <div class="locker-container">
-        <div class="locker-logo">
-          <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="lockGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" style="stop-color:#ff2d75;stop-opacity:0.35" />
-                <stop offset="100%" style="stop-color:#ff2d75;stop-opacity:0" />
-              </radialGradient>
-            </defs>
-            <circle cx="28" cy="28" r="28" fill="url(#lockGlow)"/>
-            <rect x="15" y="26" width="26" height="22" rx="5" fill="#ff2d75"/>
-            <path d="M20 26V20a8 8 0 0 1 16 0v6" fill="none" stroke="#ff7aaa" stroke-width="3.5" stroke-linecap="round"/>
-            <circle cx="28" cy="36" r="2.5" fill="#ffffff"/>
-          </svg>
-        </div>
-        <h2 class="locker-title">Website Locked</h2>
-        <p class="locker-subtitle">${hostname}</p>
-        
-        <div class="pin-display">
-          <div class="pin-dot"></div>
-          <div class="pin-dot"></div>
-          <div class="pin-dot"></div>
-          <div class="pin-dot"></div>
-          <div class="pin-dot"></div>
-          <div class="pin-dot"></div>
-        </div>
+    const container = document.createElement("div");
+    container.className = "locker-container";
 
-        <p class="message-error hidden" id="message-error"></p>
-        <p class="message-info hidden" id="message-info"></p>
+    const logoDiv = document.createElement("div");
+    logoDiv.className = "locker-logo";
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const logoSvg = document.createElementNS(SVG_NS, "svg");
+    logoSvg.setAttribute("viewBox", "0 0 56 56");
+    logoSvg.setAttribute("xmlns", SVG_NS);
 
-        <div class="pin-keypad" id="pin-keypad">
-          <button class="key-btn" data-key="1">1</button>
-          <button class="key-btn" data-key="2">2</button>
-          <button class="key-btn" data-key="3">3</button>
-          <button class="key-btn" data-key="4">4</button>
-          <button class="key-btn" data-key="5">5</button>
-          <button class="key-btn" data-key="6">6</button>
-          <button class="key-btn" data-key="7">7</button>
-          <button class="key-btn" data-key="8">8</button>
-          <button class="key-btn" data-key="9">9</button>
-          <button class="key-btn action-btn" data-key="clear">CLEAR</button>
-          <button class="key-btn" data-key="0">0</button>
-          <button class="key-btn action-btn" data-key="backspace">
-            <svg viewBox="0 0 24 24">
-              <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-    `;
+    const defs = document.createElementNS(SVG_NS, "defs");
+    const gradient = document.createElementNS(SVG_NS, "radialGradient");
+    gradient.setAttribute("id", "lockGlow");
+    gradient.setAttribute("cx", "50%");
+    gradient.setAttribute("cy", "50%");
+    gradient.setAttribute("r", "50%");
+    const stop1 = document.createElementNS(SVG_NS, "stop");
+    stop1.setAttribute("offset", "0%");
+    stop1.style.stopColor = "#ff2d75";
+    stop1.style.stopOpacity = "0.35";
+    const stop2 = document.createElementNS(SVG_NS, "stop");
+    stop2.setAttribute("offset", "100%");
+    stop2.style.stopColor = "#ff2d75";
+    stop2.style.stopOpacity = "0";
+    gradient.appendChild(stop1);
+    gradient.appendChild(stop2);
+    defs.appendChild(gradient);
+
+    const glowCircle = document.createElementNS(SVG_NS, "circle");
+    glowCircle.setAttribute("cx", "28");
+    glowCircle.setAttribute("cy", "28");
+    glowCircle.setAttribute("r", "28");
+    glowCircle.setAttribute("fill", "url(#lockGlow)");
+
+    const lockBody = document.createElementNS(SVG_NS, "rect");
+    lockBody.setAttribute("x", "15");
+    lockBody.setAttribute("y", "26");
+    lockBody.setAttribute("width", "26");
+    lockBody.setAttribute("height", "22");
+    lockBody.setAttribute("rx", "5");
+    lockBody.setAttribute("fill", "#ff2d75");
+
+    const lockShackle = document.createElementNS(SVG_NS, "path");
+    lockShackle.setAttribute("d", "M20 26V20a8 8 0 0 1 16 0v6");
+    lockShackle.setAttribute("fill", "none");
+    lockShackle.setAttribute("stroke", "#ff7aaa");
+    lockShackle.setAttribute("stroke-width", "3.5");
+    lockShackle.setAttribute("stroke-linecap", "round");
+
+    const keyhole = document.createElementNS(SVG_NS, "circle");
+    keyhole.setAttribute("cx", "28");
+    keyhole.setAttribute("cy", "36");
+    keyhole.setAttribute("r", "2.5");
+    keyhole.setAttribute("fill", "#ffffff");
+
+    logoSvg.appendChild(defs);
+    logoSvg.appendChild(glowCircle);
+    logoSvg.appendChild(lockBody);
+    logoSvg.appendChild(lockShackle);
+    logoSvg.appendChild(keyhole);
+    logoDiv.appendChild(logoSvg);
+
+    const title = document.createElement("h2");
+    title.className = "locker-title";
+    title.textContent = "Website Locked";
+
+    const subtitle = document.createElement("p");
+    subtitle.className = "locker-subtitle";
+    subtitle.textContent = hostname;
+
+    const pinDisplay = document.createElement("div");
+    pinDisplay.className = "pin-display";
+    for (let i = 0; i < 6; i++) {
+      const dot = document.createElement("div");
+      dot.className = "pin-dot";
+      pinDisplay.appendChild(dot);
+    }
+
+    const messageError = document.createElement("p");
+    messageError.className = "message-error hidden";
+    messageError.id = "message-error";
+
+    const messageInfo = document.createElement("p");
+    messageInfo.className = "message-info hidden";
+    messageInfo.id = "message-info";
+
+    const keypad = document.createElement("div");
+    keypad.className = "pin-keypad";
+    keypad.id = "pin-keypad";
+
+    const keys = [
+      { key: "1", label: "1" }, { key: "2", label: "2" }, { key: "3", label: "3" },
+      { key: "4", label: "4" }, { key: "5", label: "5" }, { key: "6", label: "6" },
+      { key: "7", label: "7" }, { key: "8", label: "8" }, { key: "9", label: "9" },
+      { key: "clear", label: "CLEAR", action: true },
+      { key: "0", label: "0" },
+      { key: "backspace", label: "", action: true, svgD: "M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z" }
+    ];
+    keys.forEach(k => {
+      const btn = document.createElement("button");
+      btn.className = "key-btn" + (k.action ? " action-btn" : "");
+      btn.dataset.key = k.key;
+      if (k.svgD) {
+        const svgBtn = document.createElementNS(SVG_NS, "svg");
+        svgBtn.setAttribute("viewBox", "0 0 24 24");
+        const pathBtn = document.createElementNS(SVG_NS, "path");
+        pathBtn.setAttribute("d", k.svgD);
+        svgBtn.appendChild(pathBtn);
+        btn.appendChild(svgBtn);
+      } else {
+        btn.textContent = k.label;
+      }
+      keypad.appendChild(btn);
+    });
+
+    container.appendChild(logoDiv);
+    container.appendChild(title);
+    container.appendChild(subtitle);
+    container.appendChild(pinDisplay);
+    container.appendChild(messageError);
+    container.appendChild(messageInfo);
+    container.appendChild(keypad);
+    overlay.appendChild(container);
 
     shadow.appendChild(overlay);
     document.documentElement.appendChild(root);
 
     // Input States
     let pinInput = "";
-    const container = overlay.querySelector(".locker-container");
-    const dots = overlay.querySelectorAll(".pin-dot");
-    const keypad = overlay.querySelector("#pin-keypad");
-    const messageError = overlay.querySelector("#message-error");
-    const messageInfo = overlay.querySelector("#message-info");
+    const dots = pinDisplay.querySelectorAll(".pin-dot");
     let lockoutCountdownTimer = null;
     let errorHideTimer = null;
 
