@@ -1,0 +1,40 @@
+Notes for Reviewers:
+
+WHAT THIS EXTENSION DOES:
+Web Locker is a focus/productivity tool that allows users to lock distracting websites (like social media, forums, etc.) behind a 6-digit PIN. When a locked website is opened, the page content is instantly hidden and replaced with a lock screen requiring the correct PIN to access.
+
+DATA AND PRIVACY:
+• All data is stored locally using the browser's storage API (chrome.storage.local).
+• NO data is transmitted to any external server.
+• NO telemetry, analytics, or tracking is implemented.
+• The PIN is stored locally and never leaves the user's device.
+• Lockout state (temporary lock after wrong attempts) is also stored locally and persists across browser restarts.
+• Import/Export files only contain the user's lock list (domain names) — no PIN or sensitive data is included.
+
+PERMISSIONS:
+• <all_urls>: Required to run the content script that hides page content on locked websites. The content script runs at document_start (before any page content renders) on ALL websites, but only activates (shows the lock screen) on domains the user has explicitly added to their lock list.
+• storage: Required to persist the user's PIN, locked site list, and settings across browser sessions.
+• tabs / activeTab: Required to detect the current website domain and check if it's in the user's lock list.
+
+HANDLING USER DATA:
+• The extension does NOT collect, transmit, or share any user data.
+• All settings and PIN are stored in chrome.storage.local on the user's device.
+• No accounts, no sync, no cloud services.
+
+CONTENT SCRIPT BEHAVIOR:
+• The content script is injected at document_start on all URLs.
+• It immediately hides the page via display:none before any content renders.
+• It then checks if the current hostname matches any entry in the user's lock list.
+• If the site is locked, a Shadow DOM lock screen with PIN keypad is injected.
+• If the site is not locked, the page is shown normally.
+• Only activates on user-locked domains — all other websites work normally.
+
+TESTING ACCOUNTS:
+No test accounts needed. The extension works entirely on the user's local device.
+
+For testing:
+1. Install the extension
+2. Click the toolbar icon and set a 6-digit PIN
+3. Add a website to the lock list (e.g., example.com)
+4. Visit the locked website — the lock screen will appear
+5. Enter the correct PIN to unlock

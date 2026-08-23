@@ -1,0 +1,31 @@
+Web Locker — Lock Websites with PIN
+
+A minimalist browser extension that hides distracting websites behind a 6-digit PIN. Zero content leaks, zero tracking — just pure focus.
+
+KEY FEATURES:
+• 6-Digit PIN Lock — Lock any website by domain. All subdomains are automatically protected.
+• Auto Re-Lock — Automatically re-locks websites after idle. Choose from instant, 1min, 5min, 15min, or 30min.
+• Lockout Protection — Too many wrong attempts? Input locks temporarily. Configurable attempt limit and lockout duration.
+• Numpad + Keyboard — Click digits on the on-screen keypad or type directly on your keyboard. Backspace and Escape supported.
+• Zero Content Leak — The page is hidden before it renders (display:none at document_start). No flashing, no peeking, no content leaks possible.
+• Import / Export — Backup your lock list to a file and restore it on any browser. No account or login needed.
+• Cross-Browser — Works on Chrome, Edge, and Firefox with a single cross-browser manifest.
+• Privacy First — All data (PIN, lock list, settings) is stored locally in your browser. No servers, no tracking, no telemetry.
+
+HOW IT WORKS:
+1. The extension injects a content script at document_start that instantly hides the page
+2. It checks if the current website is in your lock list
+3. If locked, a beautiful lock screen with a PIN keypad is shown
+4. Enter the correct 6-digit PIN to unlock and access the site
+5. The site automatically re-locks when you become idle
+
+PERMISSIONS EXPLAINED:
+• storage — Saves your PIN, locked site list, and auto-lock settings locally
+• tabs / activeTab — Detects the current website domain to check against your lock list
+• <all_urls> — Runs the page-hiding content script on websites you want to lock
+
+WHAT'S NEW IN V1.0:
+• Initial release with core PIN locking functionality
+• Configurable lockout protection with PIN confirmation for settings changes
+• Import / Export for lock list backup
+• AMOLED dark lock screen with neon pink accents
