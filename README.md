@@ -1,4 +1,4 @@
-# 🔒 Web Locker
+# Web Locker
 
 ```
  ██╗    ██╗███████╗██████╗ ██╗     ██████╗ 
@@ -8,56 +8,54 @@
  ╚███╔███╔╝███████╗██████╔╝███████╗██████╔╝
   ╚══╝╚══╝ ╚══════╝╚═════╝ ╚══════╝╚═════╝ 
 
- 🔐 PIN Lock | ⏱️ Auto Re-Lock | 🛡️ Lockout Protection
+ PIN Lock | Auto Re-Lock | Lockout Protection
 ```
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 ![Manifest](https://img.shields.io/badge/Manifest-V3-blue)
 ![Platform](https://img.shields.io/badge/Platform-Chrome%20%7C%20Edge%20%7C%20Firefox-green)
-![Privacy](https://img.shields.io/badge/Privacy-Local%20Only-pink)
 
-> 🔒 A minimalist browser extension that locks distracting websites behind a 6-digit PIN. Zero content leaks, zero tracking — just pure focus.
-
----
-
-## 📷 Preview
-
-| Lock Screen | Popup Menu | Settings |
-|:---:|:---:|:---:|
-| ![Lock Screen](./asset/web-lock-preview.webp) | ![Popup Menu](./asset/popup-menu.webp) | ![Settings](./asset/web-lock-preview.webp) |
+> A minimalist browser extension that locks distracting websites behind a 6-digit PIN. Zero content leaks, zero tracking — just pure focus.
 
 ---
 
-## ✨ Features
+## Preview
 
-- 🔒 **6-Digit PIN Lock** — Lock any website by domain. All subdomains are protected.
-- ⏱️ **Auto Re-Lock** — Automatically re-locks websites after idle. Configurable timer.
-- 🛡️ **Lockout Protection** — Too many wrong attempts? Input locks temporarily. Configurable.
-- ⌨️ **Numpad + Keyboard** — Click digits or type directly. Backspace + Escape support.
-- 🚫 **Zero Content Leak** — Page hidden before rendering. No flashing, no peeking.
-- 💾 **Import / Export** — Backup and migrate your lock list. No account needed.
-- 🌍 **Cross-Browser** — Chrome, Edge, Firefox. Single Manifest V3.
-- 🌙 **AMOLED Dark Mode** — Minimal lock screen with neon pink accents. Easy on the eyes.
-- 🔐 **Lockout PIN Confirmation** — Changing lockout settings requires PIN confirmation.
+| Lock Screen | Popup Menu |
+|:---:|:---:|
+| ![Lock Screen](./asset/web-lock-preview.webp) | ![Popup Menu](./asset/popup-menu.webp) |
 
 ---
 
-## ⚠️ How it works
+## Features
+
+- **6-Digit PIN Lock** — Lock any website by domain. All subdomains are protected.
+- **Auto Re-Lock** — Automatically re-locks websites after idle. Configurable timer.
+- **Lockout Protection** — Too many wrong attempts? Input locks temporarily.
+- **Numpad + Keyboard** — Click digits or type directly. Backspace + Escape.
+- **Zero Content Leak** — Page hidden before rendering. No flashing, no peeking.
+- **Import / Export** — Backup and migrate your lock list. No account needed.
+- **Cross-Browser** — Chrome, Edge, Firefox. Single Manifest V3.
+- **Lockout PIN Confirmation** — Changing lockout settings requires PIN.
+
+---
+
+## How it works
 
 > [!NOTE]
 > **Web Locker Architecture**
 >
-> 1. **Instant page hide** — `content.js` runs at `document_start` and hides the whole page before anything renders.
-> 2. **Lock check** — Content script asks the background script whether the current hostname is locked.
-> 3. **Lock screen** — If locked, a Shadow DOM lock screen (logo + PIN pad) is injected.
-> 4. **PIN verify** — Each digit posts to `chrome.storage.local`. On 6-digit match, unlocks the site for the configured timeout.
-> 5. **Idle lock** — After idle timeout, the lock screen re-appears automatically.
+> 1. `content.js` runs at `document_start` and hides the whole page before anything renders.
+> 2. Content script checks with the background script whether the hostname is locked.
+> 3. If locked, a Shadow DOM lock screen (logo + PIN pad) is injected.
+> 4. Each digit posts to `chrome.storage.local`. On 6-digit match, the site unlocks.
+> 5. After idle timeout, the lock screen re-appears automatically.
 
 Unlock state is kept in-memory per tab — nothing sensitive is cached across tabs or restarts.
 
 ---
 
-## 🚀 Installation
+## Installation
 
 Web Locker ships a **single cross-browser `manifest.json`** and runs on Chrome, Edge, and Firefox.
 
@@ -78,7 +76,7 @@ Web Locker ships a **single cross-browser `manifest.json`** and runs on Chrome, 
 
 ---
 
-## 🎮 Usage
+## Usage
 
 1. Click the **Web Locker** icon in your browser toolbar
 2. On a website you want to lock, click **Lock Website**
@@ -97,22 +95,22 @@ Web Locker ships a **single cross-browser `manifest.json`** and runs on Chrome, 
 
 ---
 
-## 🔐 Security Notes
+## Security
 
 > [!IMPORTANT]
 > **Privacy First**
 >
-> - The PIN is stored in **browser storage** (`chrome.storage.local`) on your device only.
+> - The PIN is stored in `chrome.storage.local` on your device only.
 > - There is **no backend or remote server**. All verification happens locally.
-> - **No telemetry, analytics, or usage data** is collected whatsoever.
-> - Lockout state persists across browser restarts (stored in local storage).
-> - Import / Export files contain only your lock list — no PIN or sensitive data.
+> - **No telemetry, analytics, or usage data** is collected.
+> - Lockout state persists across browser restarts.
+> - Import / Export files contain only your lock list.
 
 See [`PRIVACY_POLICY.md`](./PRIVACY_POLICY.md) for the full data-handling statement.
 
 ---
 
-## 🛠 Technical Details
+## Technical Details
 
 ```mermaid
 graph TD
@@ -138,16 +136,16 @@ graph TD
 | File | Purpose |
 |------|---------|
 | `manifest.json` | Extension configuration (MV3) |
-| `content.js` | Page hiding + lock screen injection (Shadow DOM) |
-| `popup.js` | Popup UI logic, PIN verification, settings management |
-| `background.js` | Event routing, tab management, lock state coordination |
+| `content.js` | Page hiding + lock screen injection |
+| `popup.js` | Popup UI logic, PIN verification, settings |
+| `background.js` | Event routing, tab management, lock state |
 
 ---
 
-## 🔮 What's Next
+## What's Next
 
 > [!TIP]
-> Future development plans for **Web Locker**:
+> Future development plans:
 >
 > - Publishing to **Chrome Web Store** & **Firefox Add-ons**
 > - Custom lock screen messages per website
@@ -156,7 +154,7 @@ graph TD
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Feel free to:
 
@@ -166,14 +164,14 @@ Contributions are welcome! Feel free to:
 
 ---
 
-## 📝 License
+## License
 
 MIT License — free to use in your own projects!
 
 ---
 
 <div align="center">
-Made with 🔐 for the focused community
+Made with care
 <br>
-🌟 Star us if you find this useful!
+Star us if you find this useful!
 </div>
