@@ -1,4 +1,56 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Cross-browser namespace shim (Firefox Android exposes `browser`, Chrome `chrome`)
+  const extApi = typeof browser !== "undefined" ? browser : chrome;
+  const tabsApi = (extApi.tabs || chrome.tabs);
+
+  // Firefox Android: `currentWindow` is often undefined, and tabs API can be
+  // restricted. Fall back to a plain {active:true} query.
+  function getActiveTab(cb) {
+    if (!tabsApi || !tabsApi.query) {
+      cb(null);
+      return;
+    }
+    try {
+      tabsApi.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs && tabs[0]) {
+          cb(tabs[0]);
+          return;
+        }
+        // Fallback: any active tab with an http(s) URL
+        tabsApi.query({ active: true }, (fallbackTabs) => {
+          const found = (fallbackTabs || []).find(t => t.url && /^https?:/.test(t.url)) || (fallbackTabs || [])[0] || null;
+          cb(found);
+        });
+      });
+    } catch (e) {
+      try {
+        tabsApi.query({ active: true }, (fallbackTabs) => {
+          cb((fallbackTabs || [])[0] || null);
+        });
+      } catch (e2) {
+        cb(null);
+      }
+    }
+  }
+
+  function reloadTabById(tabId) {
+    if (!tabsApi || !tabId) return;
+    try {
+      if (tabsApi.reload) {
+        tabsApi.reload(tabId);
+      } else if (tabsApi.update) {
+        tabsApi.update(tabId, { url: undefined });
+      }
+    } catch (e) {
+      // On Firefox Android reload can fail without "tabs" host access.
+      // Lock state still applies on next navigation, so this is non-fatal.
+    }
+  }
+
+  function isMobileFirefox() {
+    return /Android|Fennec|Mobile/i.test(navigator.userAgent || "");
+  }
+
   const setupView = document.getElementById("setup-view");
   const mainView = document.getElementById("main-view");
 
@@ -95,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 2. Fetch Active Tab URL Information
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    getActiveTab((__activeTab) => { const tabs = __activeTab ? [__activeTab] : [];
       if (tabs[0] && tabs[0].url) {
         try {
           const url = new URL(tabs[0].url);
@@ -149,9 +201,9 @@ document.addEventListener("DOMContentLoaded", () => {
         renderLockedSites(sites);
         // Reload active tab to immediately apply locker overlay if locked,
         // or unlock if removed.
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        getActiveTab((__activeTab) => { const tabs = __activeTab ? [__activeTab] : [];
           if (tabs[0]) {
-            chrome.tabs.reload(tabs[0].id);
+            reloadTabById(tabs[0].id);
           }
         });
       });
@@ -367,12 +419,12 @@ document.addEventListener("DOMContentLoaded", () => {
           renderLockedSites(updatedSites);
           updateLockStatus(updatedSites);
           // Refresh active tab if we just unlocked its domain
-          chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          getActiveTab((__activeTab) => { const tabs = __activeTab ? [__activeTab] : [];
             if (tabs[0] && tabs[0].url) {
               try {
                 const url = new URL(tabs[0].url);
                 if (url.hostname === siteToRemove || url.hostname.endsWith("." + siteToRemove)) {
-                  chrome.tabs.reload(tabs[0].id);
+                  reloadTabById(tabs[0].id);
                 }
               } catch (e) { }
             }
@@ -630,20 +682,32 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       const json = JSON.stringify(backup, null, 2);
-      const blob = new Blob([json], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
 
-      const now = new Date();
-      const dateStr = now.toISOString().split("T")[0];
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `web-locker-backup-${dateStr}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      // Firefox Android ignores the `download` attribute in a popup opened as
+      // a tab, so keep the Blob download attempt but also copy to clipboard
+      // as a fallback on mobile.
+      try {
+        const blob = new Blob([json], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
 
-      showImportMsg(`Exported ${lockedSites.length} site(s) successfully!`, false);
+        const now = new Date();
+        const dateStr = now.toISOString().split("T")[0];
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `web-locker-backup-${dateStr}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      } catch (e) { /* download not supported, clipboard fallback below */ }
+
+      if (isMobileFirefox() && navigator.clipboard) {
+        navigator.clipboard.writeText(json).catch(() => {}).finally(() => {
+          showImportMsg(`Exported ${lockedSites.length} site(s). Backup also copied to clipboard (mobile download may be blocked).`, false);
+        });
+      } else {
+        showImportMsg(`Exported ${lockedSites.length} site(s) successfully!`, false);
+      }
     });
   });
 
@@ -725,7 +789,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       // Reload current tab if it's now locked by imported sites
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      getActiveTab((__activeTab) => { const tabs = __activeTab ? [__activeTab] : [];
         if (tabs[0] && tabs[0].url) {
           try {
             const url = new URL(tabs[0].url);
@@ -734,7 +798,7 @@ document.addEventListener("DOMContentLoaded", () => {
               s => hostname === s || hostname.endsWith("." + s)
             );
             if (isLocked) {
-              chrome.tabs.reload(tabs[0].id);
+              reloadTabById(tabs[0].id);
             }
           } catch (e) { }
         }

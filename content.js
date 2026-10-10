@@ -1,4 +1,8 @@
 (function () {
+  // Cross-browser namespace shim (Firefox Android exposes `browser`, Chrome `chrome`)
+  const extApi = typeof globalThis.browser !== "undefined" ? globalThis.browser : globalThis.chrome;
+  const chrome = globalThis.chrome || extApi;
+
   // Only run in the top-level frame (don't block inside iframes like ads or widgets)
   if (window.self !== window.top) return;
 
@@ -177,16 +181,21 @@
         position: fixed;
         top: 0;
         left: 0;
+        right: 0;
+        bottom: 0;
         width: 100vw;
         height: 100vh;
+        height: 100dvh;
         background: #000000;
         z-index: 2147483647;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: grid;
+        place-items: center;
+        place-content: center;
         color: #e5e5e7;
         overflow: hidden;
         box-sizing: border-box;
+        margin: 0;
+        padding: 16px;
       }
 
       .locker-container {
@@ -197,8 +206,10 @@
         padding: 18px 22px;
         max-width: 380px;
         width: 88%;
+        width: min(88%, 380px);
         box-sizing: border-box;
         text-align: center;
+        margin: auto;
       }
 
       .locker-logo {
@@ -212,6 +223,13 @@
         font-weight: 700;
         margin: 0 0 6px 0;
         color: #ffffff;
+        white-space: nowrap;
+      }
+
+      @media (max-width: 360px) {
+        .locker-title {
+          font-size: 24px;
+        }
       }
 
       .locker-subtitle {
@@ -243,10 +261,13 @@
 
       .pin-keypad {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px 16px;
-        width: 220px;
-        margin: 0 auto;
+        grid-template-columns: repeat(3, 64px);
+        gap: 14px;
+        justify-content: center;
+        justify-items: center;
+        width: 100%;
+        margin: 0;
+        padding: 0;
       }
 
       .key-btn {
@@ -255,6 +276,9 @@
         border-radius: 50%;
         width: 58px;
         height: 58px;
+        margin: 0;
+        padding: 0;
+        justify-self: center;
         font-size: 20px;
         font-weight: 300;
         color: #e5e5e7;
@@ -265,16 +289,23 @@
         transition: all 0.15s ease;
         user-select: none;
         -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
         box-sizing: border-box;
       }
 
-      .key-btn:hover {
-        background: rgba(255, 45, 117, 0.2);
-        color: #ff2d75;
+      /* Hover hanya untuk device ber-mouse. Di layar sentuh :hover akan
+         "nempel" setelah tap (sticky hover) sehingga tombol pink terus. */
+      @media (hover: hover) and (pointer: fine) {
+        .key-btn:hover {
+          background: rgba(255, 45, 117, 0.2);
+          color: #ff2d75;
+        }
       }
 
       .key-btn:active {
         transform: scale(0.95);
+        background: rgba(255, 45, 117, 0.2);
+        color: #ff2d75;
       }
 
       .key-btn.action-btn {

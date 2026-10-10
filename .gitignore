@@ -1,0 +1,2 @@
+# Build artifacts (store packages) — rebuilt via ./build.sh, never committed
+dist/

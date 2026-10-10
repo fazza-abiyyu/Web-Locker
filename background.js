@@ -1,11 +1,18 @@
+// Cross-browser namespace shim (Chrome <-> Firefox).
+// Firefox Android exposes both `browser` and `chrome`; Chrome only `chrome`.
+const extApi = typeof globalThis.browser !== "undefined" ? globalThis.browser : globalThis.chrome;
+const chrome = globalThis.chrome || extApi;
+
 // Track unlocked sites per tab in-memory during this browser session
 // Format: tabId -> Map of hostname -> unlockTimestamp
 const unlockedTabs = new Map();
 
 // Clean up when tab is closed
-chrome.tabs.onRemoved.addListener((tabId) => {
-  unlockedTabs.delete(tabId);
-});
+if (chrome.tabs && chrome.tabs.onRemoved) {
+  chrome.tabs.onRemoved.addListener((tabId) => {
+    unlockedTabs.delete(tabId);
+  });
+}
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const tabId = sender.tab ? sender.tab.id : null;
