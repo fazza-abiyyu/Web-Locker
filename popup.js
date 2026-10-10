@@ -51,6 +51,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return /Android|Fennec|Mobile/i.test(navigator.userAgent || "");
   }
 
+  // Force popup engine re-measure tinggi popup setelah konten berubah.
+  // Chrome MV3 popup engine sering ngunci height di nilai awal, jadi kita
+  // perlu eksplisit update body height ke scrollHeight.
+  function resizePopup() {
+    requestAnimationFrame(() => {
+      document.body.style.height = "auto";
+      const h = document.body.scrollHeight;
+      document.body.style.height = h + "px";
+    });
+  }
+
   const setupView = document.getElementById("setup-view");
   const mainView = document.getElementById("main-view");
 
@@ -143,6 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.classList.add("active");
         const tabId = btn.getAttribute("data-tab");
         document.getElementById(tabId).classList.add("active");
+        resizePopup();
       });
     });
 
@@ -812,4 +824,12 @@ document.addEventListener("DOMContentLoaded", () => {
   importConfirmPin.addEventListener("keydown", (e) => {
     if (e.key === "Enter") importConfirmBtn.click();
   });
+
+  // Auto-resize popup setiap konten DOM berubah
+  // (tab switch, list update, modal show/hide, message).
+  const resizeObserver = new MutationObserver(resizePopup);
+  resizeObserver.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+  // Initial resize setelah render awal
+  resizePopup();
 });

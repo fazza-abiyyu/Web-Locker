@@ -1,6 +1,4 @@
-/* NOTE (Firefox Android): remote @import fonts violate the MV3 extension-page
-   CSP and fail offline on mobile. Outfit is optional — system stack below
-   is the fallback. Bundle the font locally if you want pixel-identical UI. */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
   --bg-color: #000000;
@@ -13,41 +11,31 @@
   --error-color: #ff453a;
 }
 
+html {
+  width: 340px;
+  min-width: 340px;
+  max-width: 340px;
+  background: var(--bg-color);
+}
+
 body {
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
-  width: 100%;
-  max-width: 480px;
-  min-height: 100vh;
-  box-sizing: border-box;
+  width: 340px;
+  min-width: 340px;
+  max-width: 340px;
   background: var(--bg-color);
   color: var(--text-primary);
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .app-container {
   padding: 24px 20px;
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  box-sizing: border-box;
 }
 
-@media (max-width: 400px) {
-  .app-container {
-    padding: 16px 12px;
-  }
-  .card {
-    padding: 16px;
-    border-radius: 12px;
-  }
-  .tab-btn {
-    padding: 8px 6px;
-    font-size: 11px;
-  }
-}
-
+/* Header styling */
 .app-header {
   margin-bottom: 24px;
 }
@@ -66,7 +54,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 15px rgba(255, 45, 117, 0.15);
+  box-shadow: 0 4px 15px rgba(212, 178, 111, 0.15);
 }
 
 .app-logo svg {
@@ -93,6 +81,7 @@ body {
   opacity: 0.8;
 }
 
+/* AMOLED Cards */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -101,6 +90,7 @@ body {
   box-sizing: border-box;
 }
 
+/* Tab Navigation (Pills) */
 .tab-nav {
   display: flex;
   gap: 6px;
@@ -152,6 +142,7 @@ body {
   display: none;
 }
 
+/* Inputs & Form Elements */
 .section-title {
   font-size: 13px;
   font-weight: 700;
@@ -233,8 +224,8 @@ select:focus {
 }
 
 .primary-btn:hover {
-  background: #d92566;
-  border-color: #d92566;
+  background: #bfa063;
+  border-color: #bfa063;
 }
 
 .primary-btn:active {
@@ -252,6 +243,7 @@ select:focus {
   color: var(--accent-gold);
 }
 
+/* Status View */
 .status-card {
   text-align: center;
 }
@@ -298,7 +290,7 @@ select:focus {
   color: #000000;
   background: var(--accent-gold);
   border-color: var(--accent-gold);
-  box-shadow: 0 0 15px rgba(255, 45, 117, 0.2);
+  box-shadow: 0 0 15px rgba(212, 178, 111, 0.2);
 }
 
 .status-icon svg {
@@ -337,6 +329,7 @@ select:focus {
   color: #000000;
 }
 
+/* Locked Sites Tab list */
 .add-site-form {
   display: flex;
   gap: 8px;
@@ -358,7 +351,7 @@ select:focus {
 }
 
 .icon-btn:hover {
-  background: #d92566;
+  background: #bfa063;
 }
 
 .icon-btn svg {
@@ -425,6 +418,7 @@ select:focus {
   fill: currentColor;
 }
 
+/* Feedback messages */
 .error-text {
   color: var(--error-color);
   font-size: 11px;
@@ -443,6 +437,7 @@ select:focus {
   color: var(--error-color);
 }
 
+/* Modal Overlay & Card Styling */
 .modal-overlay {
   position: absolute;
   top: 0;
@@ -523,83 +518,47 @@ select:focus {
   flex: 1;
 }
 
-.backup-buttons {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
+/* ====================================================================
+ * Mobile overrides (Firefox Android — popup dibuka di tab/window kecil).
+ * Hanya aktif di viewport < 420px. DESKTOP DEFAULT TIDAK DISENTUH.
+ * ==================================================================== */
+
+/* Mobile: override body fixed-width ke lebar penuh layar (max 480px).
+   !important dipakai supaya bisa override min/max-width yang mungkin
+   ditambahkan browser popup engine. */
+@media (max-width: 420px) {
+  body {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 480px !important;
+    margin: 0 auto !important;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+
+  .app-container {
+    padding: 16px 12px;
+  }
+
+  .card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .tab-btn {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
 }
 
-.backup-buttons .secondary-btn {
-  padding: 10px 12px;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
-}
-
-.backup-buttons .secondary-btn:hover {
-  background: var(--accent-gold);
-  color: #000000;
-}
-
-.lockout-countdown {
-  text-align: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--error-color);
-  margin: 8px 0;
-  padding: 8px 10px;
-  background: rgba(255, 69, 58, 0.1);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 69, 58, 0.2);
-}
-
-.lockout-countdown.hidden {
-  display: none;
-}
-
-input:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* Layar sentuh: matikan efek :hover yang nempel setelah tap (sticky hover).
+/* Touch devices: matikan efek :hover yang nempel setelah tap (sticky hover).
    Feedback sentuhan tetap ditangani :active bawaan browser. */
 @media (hover: none) {
-  .tab-btn:hover {
-    color: var(--text-secondary);
-  }
-  .primary-btn:hover {
-    background: var(--accent-gold);
-    border-color: var(--accent-gold);
-  }
-  .action-toggle-btn:hover {
-    background: transparent;
-    color: var(--accent-gold);
-  }
-  .icon-btn:hover {
-    background: var(--accent-gold);
-  }
-  .delete-btn:hover {
-    color: var(--text-secondary);
-  }
-  .secondary-btn:hover {
-    background: transparent;
-    border-color: var(--card-border);
-  }
-  .backup-buttons .secondary-btn:hover {
-    background: transparent;
-    color: var(--accent-gold);
-  }
+  .tab-btn:hover              { color: var(--text-secondary); }
+  .primary-btn:hover          { background: var(--accent-gold); border-color: var(--accent-gold); }
+  .action-toggle-btn:hover    { background: transparent; color: var(--accent-gold); }
+  .icon-btn:hover             { background: var(--accent-gold); }
+  .delete-btn:hover           { color: var(--text-secondary); }
+  .secondary-btn:hover        { background: transparent; border-color: var(--card-border); }
+  .backup-buttons .secondary-btn:hover { background: transparent; color: var(--accent-gold); }
 }

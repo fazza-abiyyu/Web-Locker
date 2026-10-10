@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Web Locker",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Lock specific websites with a PIN or password.",
   "permissions": [
     "storage",
@@ -12,7 +12,7 @@
     "<all_urls>"
   ],
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {
@@ -47,11 +47,14 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "web-locker@fazzaabiyyu",
-      "strict_min_version": "140.0",
+      "strict_min_version": "120.0",
       "data_collection_permissions": {
         "required": ["none"],
         "optional": []
       }
+    },
+    "gecko_android": {
+      "strict_min_version": "120.0"
     }
   }
 }
