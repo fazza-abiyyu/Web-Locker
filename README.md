@@ -47,7 +47,7 @@
 > [!NOTE]
 > **Web Locker Architecture**
 >
-> 1. `content.js` runs at `document_start` and hides the whole page before anything renders.
+> 1. `src/index.js` runs at `document_start` and hides the whole page before anything renders.
 > 2. Content script checks with the background script whether the hostname is locked.
 > 3. If locked, a Shadow DOM lock screen (logo + PIN pad) is injected.
 > 4. Each digit posts to `chrome.storage.local`. On 6-digit match, the site unlocks.
@@ -116,7 +116,7 @@ See [`PRIVACY_POLICY.md`](./PRIVACY_POLICY.md) for the full data-handling statem
 
 ```mermaid
 graph TD
-    A[Website Loads] --> B{content.js @ document_start}
+    A[Website Loads] --> B{src/index.js @ document_start}
     B --> C[Hide page via display:none]
     C --> D{Check if hostname locked}
     D -->|Locked| E[Inject Shadow DOM lock screen]
@@ -138,8 +138,12 @@ graph TD
 | File | Purpose |
 |------|---------|
 | `manifest.json` | Extension configuration (MV3) |
-| `content.js` | Page hiding + lock screen injection |
-| `popup.js` | Popup UI logic, PIN verification, settings |
+| `src/index.js` | Content entry: page hiding + lock status check |
+| `src/modules/lock-screen.js` | Shadow DOM lock screen, PIN entry, lockout |
+| `src/modules/idle-timer.js` | Idle detection + auto-lock timeout |
+| `src/lib/` | Shared helpers (extension API, blocker, lock UI) |
+| `src/popup/index.js` | Popup entry (ES modules) |
+| `src/popup/modules/` | Dashboard, sites, PIN modal, lockout, backup |
 | `background.js` | Event routing, tab management, lock state |
 
 ---

@@ -8,13 +8,19 @@ set -eu
 cd "$(dirname "$0")"
 
 VER=$(python3 -c "import json; print(json.load(open('manifest.json'))['version'])")
-FILES="manifest.json background.js content.js content.css popup.html popup.css popup.js LICENSE"
+FILES="manifest.json background.js content.css popup.html popup.css LICENSE"
+SRC="src"
 IMAGES="images/icon16.png images/icon32.png images/icon48.png images/icon128.png"
 
-for f in $FILES $IMAGES; do
+for f in $FILES $SRC $IMAGES; do
   [ -e "$f" ] || { echo "MISSING: $f"; exit 1; }
 done
-node --check background.js && node --check content.js && node --check popup.js
+for f in background.js src/lib/*.js src/state.js src/modules/*.js src/index.js; do
+  node --check "$f"
+done
+for f in src/popup/*.js src/popup/lib/*.js src/popup/modules/*.js; do
+  node --input-type=module --check < "$f"
+done
 python3 -c "import json; json.load(open('manifest.json')); json.load(open('manifest.firefox.json')); print('manifests OK')"
 
 rm -rf dist && mkdir -p dist/stage-firefox dist/stage-chrome
@@ -22,8 +28,10 @@ STAGE_CHROME="dist/stage-chrome"
 STAGE_FF="dist/stage-firefox"
 
 cp $FILES "$STAGE_CHROME/"
+cp -R "$SRC" "$STAGE_CHROME/"
 mkdir -p "$STAGE_CHROME/images" && cp $IMAGES "$STAGE_CHROME/images/"
 cp $FILES "$STAGE_FF/" 2>/dev/null || true
+cp -R "$SRC" "$STAGE_FF/"
 mkdir -p "$STAGE_FF/images" && cp $IMAGES "$STAGE_FF/images/"
 # Firefox uses the scripts-based background; the file must be named manifest.json
 cp manifest.firefox.json "$STAGE_FF/manifest.json"
